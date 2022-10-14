@@ -3,9 +3,10 @@ from image import *
 
 # Reading the image
 img = cv2.imread('Media/40.jpg')
-# img = resize(img)
+img1 = cv2.imread('Media/sailing_star.jpg')
 
-img = increase_brightness(img, 2.6)
+img = blend_image(img, img1, 160, 80)
+img = increase_brightness(img, 1.9)
 img = sharpen_image(img)
 img = rotate_image(img, 10)
 

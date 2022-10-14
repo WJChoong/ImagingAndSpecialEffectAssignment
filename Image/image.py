@@ -5,10 +5,9 @@ from PIL import ImageEnhance, Image, ImageFilter
 from matplotlib import pyplot as plt
 # plt.style.use('seaborn')
 
+
 # https://blog.csdn.net/hua_you_qiang/article/details/118683134
 # convert PIL to numpy
-
-
 def PILToNumpy(img):
     img = np.array(img)
     return img
@@ -20,8 +19,6 @@ def numpyToPIL(img):
 
 
 # https://stackoverflow.com/questions/32609098/how-to-fast-change-image-brightness-with-python-opencv
-
-
 def increase_brightness(img, factor=2.5):
     # https://pythonexamples.org/python-pillow-adjust-image-brightness/
     img = numpyToPIL(img)
@@ -33,15 +30,15 @@ def increase_brightness(img, factor=2.5):
 
 
 # blend image
-def blend_image(img1, img2):
+def blend_image(img1, img2, alpha1, alpha2):
     img1 = numpyToPIL(img1)
     img2 = numpyToPIL(img2)
 
     img2 = img2.resize((img1.width, img1.height))
     # add alpha channel
-    img1.putalpha(100)
+    img1.putalpha(alpha1)
 
-    img2.putalpha(150)
+    img2.putalpha(alpha2)
 
     composite_img = Image.alpha_composite(img2, img1)
     img = PILToNumpy(composite_img)
@@ -73,3 +70,13 @@ def sharpen_image(img):
     img = img.filter(ImageFilter.SHARPEN)
     img = PILToNumpy(img)
     return img
+
+
+def resize(img, scale_percent=50):
+    width = int(img.shape[1] * scale_percent / 100)
+    height = int(img.shape[0] * scale_percent / 100)
+    dim = (width, height)
+
+    # resize image
+    resized_img = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
+    return resized_img
